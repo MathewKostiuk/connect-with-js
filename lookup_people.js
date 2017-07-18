@@ -9,20 +9,21 @@ const client = new pg.Client({
   port    : settings.port,
   ssl     : settings.ssl
 });
-
 const args = process.argv.slice(2);
-console.log(args);
 
-client.connect((err) => {
-  if (err) {
-    return console.error("Connection Error", err);
-  }
-  client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR first_name = $2::text OR last_name = $1::text OR last_name = $2::text", [args[0], args[1]], (err, result) => {
+
+let lookupPeople = (args) => {
+  client.connect((err) => {
     if (err) {
-      return console.error("error running query". err);
+      return console.error("Connection Error", err);
     }
-    console.log(result.rows[0]);
-    console.log(args[0], args[1]);
-    client.end();
+    client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR first_name = $2::text OR last_name = $1::text OR last_name = $2::text", [args[0], args[1]], (err, result) => {
+      if (err) {
+        return console.error("error running query". err);
+      }
+      console.log(result.rows[0]);
+      client.end();
+    });
   });
-});
+};
+lookupPeople(args);
