@@ -25,7 +25,7 @@ let lookupPeople = (args) => {
       let person = result.rows[0];
       let birthdateFormat = new Date(person.birthdate).toISOString().slice(0, 10);
       console.log('Found 1 person(s) by the name ' + args[0] + ":");
-      console.log(`- ${person.id}: ${person.first_name} ${person.last_name}, born '${birthdateFormat}'`);
+      console.log(`- 1: ${person.first_name} ${person.last_name}, born '${birthdateFormat}'`);
       client.end();
     });
   });
