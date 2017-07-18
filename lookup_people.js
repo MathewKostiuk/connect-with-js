@@ -13,6 +13,7 @@ const args = process.argv.slice(2);
 
 
 let lookupPeople = (args) => {
+  console.log('Searching...');
   client.connect((err) => {
     if (err) {
       return console.error("Connection Error", err);
@@ -21,7 +22,10 @@ let lookupPeople = (args) => {
       if (err) {
         return console.error("error running query". err);
       }
-      console.log(result.rows[0]);
+      let person = result.rows[0];
+      let birthdateFormat = new Date(person.birthdate).toISOString().slice(0, 10);
+      console.log('Found 1 person(s) by the name ' + args[0] + ":");
+      console.log(`- ${person.id}: ${person.first_name} ${person.last_name}, born '${birthdateFormat}'`);
       client.end();
     });
   });
